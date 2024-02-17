@@ -15,7 +15,7 @@ const ll mod = 1e9+7;
 
 
 /* submission link - https://atcoder.jp/contests/abc341/submissions/50398285
-	this is a range update type question which i had done using fenwick tree
+	this is a range update type question using fenwick tree
 */
 
 class BIT {
