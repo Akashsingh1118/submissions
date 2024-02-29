@@ -1,1 +1,1 @@
-This repo contains some questions related to concepts like digit dynamic programming, dp on trees, fenwick tree, sparse tables etc.
+This repo contains some questions related to concepts like digit dp, dp on trees, fenwick trees, sparse tables etc.
