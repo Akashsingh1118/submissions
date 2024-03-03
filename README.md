@@ -1,1 +1,7 @@
-This repo contains some questions related to concepts like digit dp, dp on trees, fenwick trees, sparse tables etc.
+This repo contains some good questions related to concepts like : </br>
+
+* Digit dp
+* Segment and fenwick trees
+* String hashing
+* Sparse tables
+  
