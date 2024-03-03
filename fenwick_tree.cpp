@@ -14,9 +14,10 @@ using namespace std;
 const ll mod = 1e9+7;
 
 
-/* problem link - https://atcoder.jp/contests/abc341/tasks/abc341_e
-	this is a range update type question using fenwick tree
-*/
+/**
+ * problem link - https://atcoder.jp/contests/abc341/tasks/abc341_e
+ * this is a range update type question using fenwick tree
+**/
 
 class BIT {
 public:
