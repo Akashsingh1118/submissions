@@ -9,6 +9,12 @@ using namespace std;
 
 // find_by_order , order_of_key
 
+/**
+ * problem link - https://atcoder.jp/contests/abc343/tasks/abc343_f
+ * this is a point update question solved using segment tree
+*/
+
+
 const int mod = 1e9 + 7;
 const int N = 200005;
 const int MIN = 1ll * -1e14;
