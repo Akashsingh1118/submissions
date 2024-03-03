@@ -14,7 +14,7 @@ using namespace std;
 const ll mod = 1e9+7;
 
 
-/* submission link - https://atcoder.jp/contests/abc341/tasks/abc341_e
+/* problem link - https://atcoder.jp/contests/abc341/tasks/abc341_e
 	this is a range update type question using fenwick tree
 */
 
