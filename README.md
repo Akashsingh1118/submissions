@@ -4,4 +4,5 @@ This repo contains some solutions of the questions related to concepts like : </
 * Segment and fenwick trees
 * String hashing
 * Sparse tables
+* String hashing
   
