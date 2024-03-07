@@ -1,4 +1,4 @@
-This repo contains some solutions of the questions related to concepts like : </br>
+This repo contains solutions to questions related to concepts such as : </br>
 
 * Digit dp
 * Segment and fenwick trees
