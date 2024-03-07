@@ -11,7 +11,7 @@ using namespace std;
 
 /**
  * problem link - https://atcoder.jp/contests/abc343/tasks/abc343_f
- * this is a point update question solved using segment tree
+ * this is a point update question solved using SEGMENT TREE
 */
 
 
