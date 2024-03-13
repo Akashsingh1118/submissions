@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
-#define int unsigned long long
+#define int long long
 #define INF 0x3F3F3F3F3F3F3FLL
 using namespace std;
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <ext/pb_ds/tree_policy.hpp>
 // using namespace __gnu_pbds;
-// typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> pbds;
+// typedef tree<int, nuint_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update> pbds;
 
 // find_by_order , order_of_key
 
@@ -15,86 +15,106 @@ using namespace std;
 */
 
 
+struct node {
+	int big, small, cnt_big, cnt_small;
+	node() {
+		big = 0, small = 0, cnt_big = 0, cnt_small = 0;
+	}
+};
+
 const int mod = 1e9 + 7;
 const int N = 200005;
-const int MIN = 1ll * -1e14;
+int arr[N];
+node t[4 * N];
 
-vector<int> t[4 * N];
-vector<int> combine(vector<int> p1, vector<int> p2) {
-	int a = p1[0], b = p1[1], ac = p1[2], bc = p1[3];
-	int x = p2[0], y = p2[1], xc = p2[2], yc = p2[3];
-	vector<int> res(4);
-	res[0] = max(a, x);
-	res[1] = max(b, y);
-	if (a != res[0]) res[1] = max(res[1], a);
-	if (x != res[0]) res[1] = max(res[1], x);
+node merge(node left, node right) {
+	node res;
+	int a = left.big, b = left.small, ac = left.cnt_big, bc = left.cnt_small;
+	int x = right.big, y = right.small, xc = right.cnt_big, yc = right.cnt_small;
+	res.big = max(a, x);
+	res.small = max(b, y);
+	if (a != res.big) res.small = max(res.small, a);
+	if (x != res.big) res.small = max(res.small, x);
 
 	// updating the frequencies 
-	if (a == res[0]) res[2] += ac;
-	if (x == res[0]) res[2] += xc;
-	if (a == res[1]) res[3] += ac;
-	if (b == res[1]) res[3] += bc;
-	if (x == res[1]) res[3] += xc;
-	if (y == res[1]) res[3] += yc;
+	if (a == res.big) res.cnt_big += ac;
+	if (x == res.big) res.cnt_big += xc;
+	if (a == res.small) res.cnt_small += ac;
+	if (b == res.small) res.cnt_small += bc;
+	if (x == res.small) res.cnt_small += xc;
+	if (y == res.small) res.cnt_small += yc;
 	return res;
 }
-void build(int a[], int v, int tl, int tr) {
-    if (tl == tr) t[v] = {a[tl], MIN, 1, 0};
-	else {
-        int tm = (tl + tr) / 2;
-        build(a, v*2, tl, tm);
-        build(a, v*2+1, tm+1, tr);
-        t[v] = combine(t[v*2], t[v*2+1]);
-    }
+void build(int id, int l, int r) {
+	if (l == r) {
+		t[id].big = arr[l];
+		t[id].small = 0;
+		t[id].cnt_big = 1;
+		t[id].cnt_small = 0;
+		return;
+	}
+	int mid = (l + r) / 2;
+	build(2 * id, l, mid);
+	build(2 * id + 1, mid + 1, r);
+	t[id] = merge(t[2 * id], t[2 * id + 1]);
 }
-vector<int> get_max(int v, int tl, int tr, int l, int r) {
-	if (tl>r || tr<l) return {MIN, MIN, 0, 0};
-	if (tl>=l && tr<=r) return t[v];
-    int tm = (tl + tr) / 2;
-    return combine(get_max(v*2, tl, tm, l, r), get_max(v*2+1, tm+1, tr, l, r));
+void update(int id, int l, int r, int pos, int val) {
+	if (pos < l || pos > r) {
+		return;
+	}
+	if (l == r) {
+		t[id].big = val;
+		t[id].small = 0;
+		t[id].cnt_big = 1;
+		t[id].cnt_small = 0;
+		return;
+	}
+	int mid = (l + r) / 2;
+	update(2 * id, l, mid, pos, val);
+	update(2 * id + 1, mid + 1, r, pos, val);
+	t[id] = merge(t[2* id], t[2 * id + 1]);
+}
+node query(int id, int l, int r, int ql, int qr) {
+	if (r < ql || l > qr) {
+		return node();
+	}
+	if (l >= ql && r <= qr) {
+		return t[id];
+	}
+	int mid = (l + r) / 2;
+	auto left = query(2 * id, l, mid, ql, qr);
+	auto right = query(2 * id + 1, mid + 1, r, ql, qr);
+	return merge(left, right);
 }
 
-void update(int v, int tl, int tr, int pos, int new_val) {
-    if (tl == tr) t[v] = {new_val, MIN, 1, 0};
-	else {
-        int tm = (tl + tr) / 2;
-        if (pos <= tm) update(v*2, tl, tm, pos, new_val);
-        else update(v*2+1, tm+1, tr, pos, new_val);
-        t[v] = combine(t[v*2], t[v*2+1]);
-    }
-}
 void solve() {
-	int n;
-	cin >> n;
-	int q;
-	cin >> q;
-	int a[n];
+	int n, q;
+	cin >> n >> q;
 	for (int i = 0; i < n; i++) {
-		cin >> a[i];
+		cin >> arr[i];
 	}
-	build(a, 1, 0, n - 1);
-	for (int i = 0; i < q; i++) {
-		int tp;
-		cin >> tp;
-		if (tp == 1) {
+	build(1, 0, n - 1);
+	// auto ans = query(1, 0, n - 1, 0, 4) ;
+	// cout << ans.small << " ";
+	while ((q--)) {
+		int ch;
+		cin >> ch;
+		if (ch == 1) {
 			int p, x;
 			cin >> p >> x;
 			p--;
-			a[p] = x;
 			update(1, 0, n - 1, p, x);
 		}
 		else {
 			int l, r;
 			cin >> l >> r;
-			auto h = get_max(1, 0, n - 1, l - 1, r - 1);
-			if (h[1] == MIN) {
-				cout << 0 << "\n";
-			}
-			else {
-				cout << h[3] << "\n";
-			}
+			l--; r--;
+			auto ans = query(1, 0, n - 1, l, r);
+			
+			cout << ans.cnt_small << "\n";
 		}
 	}
+	
 }
 
 signed main() {
@@ -105,4 +125,5 @@ signed main() {
 	while (tt--) {
 		solve();
 	}
+	return 0;
 }
