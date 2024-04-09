@@ -5,4 +5,4 @@ This repo contains solution to some of the questions which I solved related to c
 * String hashing
 * Sparse tables
 * String hashing
-  
+* Tree re-rooting dp 
